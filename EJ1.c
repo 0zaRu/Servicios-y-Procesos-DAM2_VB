@@ -15,5 +15,6 @@ int main(void){
     else
         printf("El numero introducido es 5");
         
+    printf("\n\n\n");
     return 0;
 }
