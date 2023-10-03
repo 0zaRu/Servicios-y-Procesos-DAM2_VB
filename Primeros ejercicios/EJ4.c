@@ -71,13 +71,12 @@ int main(void){
         case 'e':
 
             printf("\nVa salir del programa ...");
-            scanf("%c");
             salir = true;
             break;
 
         default:
             printf("\nSe ha introducido una respuesta erronea, vuelva a introducir otra valida ...");
-            scanf("%c");
+            
             break;
         }
 
