@@ -101,7 +101,7 @@ char menu(void){
     printf("\n||    %c. MULTIPLICAR         ||", MULTI);
     printf("\n||    %c. DIVIDIR             ||", DIVI);
     printf("\n||    %c. SALIR               ||", SALIR);
-    printf("\n================================\n");
+    printf("\n===============================\n");
     printf("Introduce una opcion: ");
     scanf("%c", &respuesta);
     
