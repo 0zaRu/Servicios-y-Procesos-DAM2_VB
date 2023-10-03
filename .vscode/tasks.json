@@ -1,6 +1,6 @@
 {
     "tasks": [
-        {
+        { 
             "type": "cppbuild",
             "label": "C/C++: gcc.exe build active file",
             "command": "C:\\Users\\6002754\\Documents\\mingw64\\bin\\gcc.exe",
