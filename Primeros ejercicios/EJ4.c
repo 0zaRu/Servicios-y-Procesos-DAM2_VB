@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <windows.h>
 #include <stdbool.h>
 
 char menu(void);
-int suma(int, int);
-int resta(int, int);
-int multiplicar(int, int);
-int dividir(int, int);
+float suma(float, float);
+float resta(float, float);
+float multiplicar(float, float);
+float dividir(float, float);
 void limpiar(void);
 
 const char SUMAR = 'a';
@@ -14,42 +15,76 @@ const char RESTAR = 'b';
 const char MULTI = 'c';
 const char DIVI = 'd';
 const char SALIR = 'e';
+const int LINEAS = 25;
 
 int main(void){
 
     bool salir = false;
     char respuesta;
+    float num1, num2;
 
     do{
-        switch (menu()){
-        case SUMAR:
-            sumar(3, 4);
+        respuesta = menu();
+        limpiar();
+
+        switch (respuesta){
+        case 'a':
+            printf("Introduce el primer numero a sumar: ");
+            scanf("%f", &num1);
+
+            printf("\nIntroduce el segundo numero a sumar: ");
+            scanf("%f", &num2);
+
+            printf("\n\nEl resultado de '%g + %g' es igual a %g", num1, num2, suma(num1, num2));
+
             break;
 
-        case RESTAR:
-            sumar(3, 4);
+        case 'b':
+            printf("Introduce el primer numero a restar: ");
+            scanf("%f", &num1);
+
+            printf("\nIntroduce el segundo numero a restar: ");
+            scanf("%f", &num2);
+
+            printf("\n\nEl resultado de '%g - %g' es igual a %g", num1, num2, resta(num1, num2));
             break;
         
-        case MULTI:
-            sumar(3, 4);
+        case 'c':
+            printf("Introduce el primer numero a multiplicar: ");
+            scanf("%f", &num1);
+
+            printf("\nIntroduce el segundo numero a multiplicar: ");
+            scanf("%f", &num2);
+
+            printf("\n\nEl resultado de '%g x %g' es igual a %g", num1, num2, multiplicar(num1, num2));
             break;
 
-        case DIVI:
-            sumar(3, 4);
+        case 'd':
+            printf("Introduce el dividendo: ");
+            scanf("%f", &num1);
+
+            printf("\nIntroduce el sdivisor: ");
+            scanf("%f", &num2);
+
+            printf("\n\nEl resultado de '%g / %g' es igual a %g", num1, num2, dividir(num1, num2));
             break;
         
-        case SALIR:
+        case 'e':
 
-            printf("\nPulse enter para salir del programa ...");
+            printf("\nVa salir del programa ...");
             scanf("%c");
             salir = true;
             break;
 
         default:
-            printf("\nSe ha introducido una respuesta erronea, vuelva a introducir otra valida ...\nEnter para continuar ...");
+            printf("\nSe ha introducido una respuesta erronea, vuelva a introducir otra valida ...");
             scanf("%c");
             break;
         }
+
+        printf("\n\nEnter para continuar ...");
+        getchar();
+        getchar();
 
         limpiar();
 
@@ -71,36 +106,33 @@ char menu(void){
     printf("\n================================\n");
     printf("Introduce una opcion: ");
     scanf("%c", &respuesta);
-    getchar();
     
     return respuesta;
 }
 
-int suma(int, int)
+float suma(float n1, float n2)
 {
-    return 0;
+    return n1+n2;
 }
 
-int resta(int, int)
+float resta(float n1, float n2)
 {
-    return 0;
+    return n1-n2;
 }
 
-int multiplicar(int, int)
+float multiplicar(float n1, float n2)
 {
-    return 0;
+    return n1*n2;
 }
 
-int dividir(int, int)
+float dividir(float n1, float n2)
 {
-    return 0;
+    return n1/n2;
 }
 
 void limpiar(void){
-    if(_WIN32 || _WIN64)
-        system("cls");
-    
-    else
-        system("clear");
-    
+    //system("cls");
+
+    for(int i = 0; i < LINEAS; i++)
+        printf("\n");
 }
