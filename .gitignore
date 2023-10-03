@@ -1,5 +1,6 @@
+*[^.]*
+!*.*
+*.exe
+!*/
 .vscode/
 .vscode/tasks.json
-*.exe
-*[^.]*
-!*/
