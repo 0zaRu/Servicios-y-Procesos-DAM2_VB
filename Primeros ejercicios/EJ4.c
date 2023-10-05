@@ -27,7 +27,7 @@ int main(void){
         limpiar();
 
         switch (respuesta){
-        case SUMAR:
+        case 'a':
             printf("Introduce el primer numero a sumar: ");
             scanf("%f", &num1);
 
