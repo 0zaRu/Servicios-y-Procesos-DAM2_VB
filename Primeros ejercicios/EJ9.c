@@ -8,7 +8,7 @@ int main(){
 	char frase[MAX];
 
 	printf("Introduce la palabra: ");
-	scanf("%s", &frase);
+	scanf("%s", frase);
 	
 	printf("\nLa palabra introducida es: \"%s\"", frase);
 
@@ -19,7 +19,7 @@ int main(){
             frase[strlen(frase)-i-1]=cambio;
         }
 
-	printf("%s", frase);
+	printf("\"%s\"\n\n\n", frase);
 
 return 0;
 }
