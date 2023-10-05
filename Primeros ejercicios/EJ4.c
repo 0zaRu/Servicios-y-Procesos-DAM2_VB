@@ -131,8 +131,8 @@ float dividir(float n1, float n2)
 }
 
 void limpiar(void){
-    //system("cls");
+    system("clear");
 
-    for(int i = 0; i < LINEAS; i++)
-        printf("\n");
+    //for(int i = 0; i < LINEAS; i++)
+    //    printf("\n");
 }
