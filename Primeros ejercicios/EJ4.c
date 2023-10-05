@@ -96,11 +96,13 @@ char menu(void){
     char respuesta;
 
     printf("===== Elige una operación =====");
+    printf("\n||                            ||");
     printf("\n||    %c. SUMAR               ||", SUMAR);
     printf("\n||    %c. RESTAR              ||", RESTAR);
     printf("\n||    %c. MULTIPLICAR         ||", MULTI);
     printf("\n||    %c. DIVIDIR             ||", DIVI);
     printf("\n||    %c. SALIR               ||", SALIR);
+    printf("\n||                            ||");
     printf("\n===============================\n");
     printf("Introduce una opcion: ");
     scanf("%c", &respuesta);
