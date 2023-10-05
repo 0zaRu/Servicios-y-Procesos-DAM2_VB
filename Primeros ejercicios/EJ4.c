@@ -26,45 +26,27 @@ int main(void){
         respuesta = menu();
         limpiar();
 
+        printf("Introduce el primer numero a para operar: ");
+        scanf("%f", &num1);
+
+        printf("\nIntroduce el segundo numero para operar: ");
+        scanf("%f", &num2);
+
         switch (respuesta){
         case 'a':
-            printf("Introduce el primer numero a sumar: ");
-            scanf("%f", &num1);
-
-            printf("\nIntroduce el segundo numero a sumar: ");
-            scanf("%f", &num2);
-
+           
             printf("\n\nEl resultado de '%g + %g' es igual a %g", num1, num2, suma(num1, num2));
-
             break;
 
         case 'b':
-            printf("Introduce el primer numero a restar: ");
-            scanf("%f", &num1);
-
-            printf("\nIntroduce el segundo numero a restar: ");
-            scanf("%f", &num2);
-
             printf("\n\nEl resultado de '%g - %g' es igual a %g", num1, num2, resta(num1, num2));
             break;
         
         case 'c':
-            printf("Introduce el primer numero a multiplicar: ");
-            scanf("%f", &num1);
-
-            printf("\nIntroduce el segundo numero a multiplicar: ");
-            scanf("%f", &num2);
-
             printf("\n\nEl resultado de '%g x %g' es igual a %g", num1, num2, multiplicar(num1, num2));
             break;
 
         case 'd':
-            printf("Introduce el dividendo: ");
-            scanf("%f", &num1);
-
-            printf("\nIntroduce el sdivisor: ");
-            scanf("%f", &num2);
-
             printf("\n\nEl resultado de '%g / %g' es igual a %g", num1, num2, dividir(num1, num2));
             break;
         
@@ -76,7 +58,6 @@ int main(void){
 
         default:
             printf("\nSe ha introducido una respuesta erronea, vuelva a introducir otra valida ...");
-            
             break;
         }
 
