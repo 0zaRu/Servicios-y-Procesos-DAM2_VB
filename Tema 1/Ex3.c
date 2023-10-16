@@ -3,8 +3,8 @@
 
 int main(void){
 
-    pid_t id_pActual, id_padre;
-
+    __pid_t id_pActual, id_padre;
+    
     id_pActual = getpid();
     id_padre = getppid();
 
