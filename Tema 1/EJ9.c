@@ -1,3 +1,10 @@
+//EJ9 de Alberto Rodríguez
+/*Si eres Marcos y estas leyendo esto, he dejado subido el ejercicio porque es funcional
+pero la verdad que bonito no es.
+Intentaré hacer el código mejor a lo largo de la semana y lo resubiré en ese caso,
+porque se me ocurren unas cuantas formas de no hacer la cosa tan fea que acabo de programar.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
