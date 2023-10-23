@@ -1,3 +1,7 @@
+//Codigo de Alberto Rodríguez
+
+//Se utuliza true si es el proceso hijo y false si es el proceso padre
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
