@@ -19,31 +19,27 @@ int main (void){
     pid_t p1 = getpid(), p2, p3;
     char buffer[50];
     
-    //printf("Soy el proceso 1, mi PID es %d y el PID de mi padre es %d\n", getpid(), getppid());
     !instanciaProceso(fork(), 2, &p2) && !instanciaProceso(fork(), 3, &p3);
-
+    
     if(getpid() == p1){
-        //Cambiar escritura por fd3 para evitar el sleep
         escribePipe(fd1, "Hola hijo(2) soy papa(1)", 0);
         leeYMuestraPipe(fd2, 0);
-
-        escribePipe(fd1, "Hola hijo(3) soy papa(1)", 1);
+        
+        escribePipe(fd3, "Hola hijo(3) soy papa(1)", 1);
         leeYMuestraPipe(fd2, 1);
     
     }else if(getpid() == p2){
+        close(fd3[0]);
+        close(fd3[1]);     //No hay forma de evitarlo?
         leeYMuestraPipe(fd1, 1);
         escribePipe(fd2, "Hola papa(1) soy tu hijo(2)", 1);
     
     }else if(getpid() == p3){
-        sleep(1);
-        //Cambiar lectura por fd3 para evitar el sleep
-        leeYMuestraPipe(fd1, 1);
+        leeYMuestraPipe(fd3, 1);
         escribePipe(fd2, "Hola papa(1) soy tu hijo(3)", 1);
     }
 
     while(wait(NULL) != -1);
-
-    //printf("\E[31mEl proceso %d termina \E[m \n", getpid());
     return 0;
 }
 
@@ -60,12 +56,11 @@ void leeYMuestraPipe(int fd[], int cierraFdUso){
     char buffer[50];
 
     int charLeidos = read(fd[0], buffer, sizeof(buffer));
-    
-    buffer[charLeidos] = '\0';
-    printf("%s\n", buffer);
-
     if(cierraFdUso)
         close(fd[0]);
+
+    buffer[charLeidos] = '\0';
+    printf("%s\n", buffer);
 }
 
 int instanciaProceso(pid_t proc, int nH, int *nPid){
