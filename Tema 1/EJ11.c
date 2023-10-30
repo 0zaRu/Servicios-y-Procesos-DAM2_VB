@@ -40,62 +40,63 @@ int main (void){
     }
 
     if(getpid() == p1){
-        numero = 5;
+    /*    numero = 5;
+        int leido = leePipe(fd1, 0);
+        printf("Soy el 1, he leido un %d\n", leido);
+        numero += leido;
 
-        waitpid(p3, NULL, 0);
-        numero += leePipe(fd1, 0);
+        leido = leePipe(fd1, 0);
+        printf("Soy el 1, he leido un %d\n", leido);
+        numero += leido;
+        
+        leido = leePipe(fd1, 0);
+        printf("Soy el 1, he leido un %d\n", leido);
+        numero += leido;
 
-        waitpid(p4, NULL, 0);
-        numero += leePipe(fd1, 0);
-
-        waitpid(p2, NULL, 0);
-        numero += leePipe(fd1, 1);
-
-        printf("\E[31mEl proceso 1 termina con el valor %d\E[m \n", numero);
-    
+        printf("\E[31mEl proceso 1 termina con el valor %d (43)\E[m \n", numero);
+    */
     }else if(getpid() == p2){
         numero = 5;
 
         waitpid(p5, NULL, 0);
         numero += leePipe(fd2, 0);
-
+        
         waitpid(p6, NULL, 0);
         numero += leePipe(fd2, 0);
-
+        
         waitpid(p7, NULL, 0);
-        numero += leePipe(fd2, 1);
+        numero += leePipe(fd2, 0);
 
         sprintf(numACad, "%d", numero);
-        escribePipe(fd1, numACad, 1);
+        escribePipe(fd1, numACad, 0);
     
-        printf("\E[31mEl proceso 2 termina con el valor %d\E[m \n", numero);
+        printf("\E[31mEl proceso 2 termina con el valor %d (16)\E[m \n", numero);
 
     }else if(getpid() == p3){
         numero = 7;
-
+        /*
         sprintf(numACad, "%d", numero);
-        escribePipe(fd1, numACad, 1);
+        escribePipe(fd1, numACad, 0);
 
-        printf("\E[31mEl proceso 3 termina con el valor %d\E[m \n", numero);
-    
+        printf("El proceso 3 termina con el valor %d\n", numero);
+    */
     }else if(getpid() == p4){
         numero = 3;
-
-        waitpid(p8, NULL, 0);
+    /*
         numero += leePipe(fd3, 1);
 
         sprintf(numACad, "%d", numero);
         escribePipe(fd1, numACad, 1);
 
-        printf("\E[31mEl proceso 4 termina con el valor %d\E[m \n", numero);
-    
+        printf("El proceso 4 termina con el valor %d\n", numero);
+    */
     }else if(getpid() == p5){
         numero = 1;
-
+    
         sprintf(numACad, "%d", numero);
         escribePipe(fd2, numACad, 1);
 
-        printf("\E[31mEl proceso 5 termina con el valor %d\E[m \n", numero);
+        printf("El proceso 5 termina con el valor %d\n", numero);
     
     }else if(getpid() == p6){
         numero = 8;
@@ -103,7 +104,7 @@ int main (void){
         sprintf(numACad, "%d", numero);
         escribePipe(fd2, numACad, 1);
 
-        printf("\E[31mEl proceso 6 termina con el valor %d\E[m \n", numero);
+        printf("El proceso 6 termina con el valor %d\n", numero);
     
     }else if(getpid() == p7){
         numero = 2;
@@ -111,38 +112,38 @@ int main (void){
         sprintf(numACad, "%d", numero);
         escribePipe(fd2, numACad, 1);
 
-        printf("\E[31mEl proceso 7 termina con el valor %d\E[m \n", numero);
+        printf("El proceso 7 termina con el valor %d\n", numero);
 
     }else if(getpid() == p8){
         numero = 3;
-
-        waitpid(p9, NULL, 0);
-        numero += leePipe(fd4, 1);
+    /*
+        wait(NULL);
+        numero += leePipe(fd4, 0);
 
         sprintf(numACad, "%d", numero);
-        escribePipe(fd3, numACad, 1);
+        escribePipe(fd3, numACad, 0);
 
-        printf("\E[31mEl proceso 8 termina con el valor %d\E[m \n", numero);
-    
+        printf("El proceso 8 termina con el valor %d\n", numero);
+    */
     }else if(getpid() == p9){
         numero = 9;
-
+    /*
         sprintf(numACad, "%d", numero);
-        escribePipe(fd4, numACad, 1);
+        escribePipe(fd4, numACad, 0);
 
-        printf("\E[31mEl proceso 9 termina con el valor %d\E[m \n", numero);
-    
+        printf("El proceso 9 termina con el valor %d\n", numero);
+    */
     }
 
-    while(wait(NULL) != -1);
 
+    while(wait(NULL) != -1);
     return 0;
 }
 
 void escribePipe(int fd[], char cadena[], int cierraFdUso){
     close(fd[0]);
     write(fd[1], cadena, strlen(cadena));
-
+    
     if(cierraFdUso)
         close(fd[1]);
 }
@@ -151,14 +152,11 @@ int leePipe(int fd[], int cierraFdUso){
     close(fd[1]);
     char buffer[10];
 
-    int charLeidos = read(fd[0], buffer, sizeof(buffer));
+    read(fd[0], buffer, sizeof(buffer));
     if(cierraFdUso)
         close(fd[0]);
-
-    buffer[charLeidos] = '\0';
+    
     return atoi(buffer);
-
-    //memset(buffer, 0, sizeof(buffer));
 }
 
 int instanciaProceso(pid_t proc, int nH, int *nPid){
