@@ -40,21 +40,14 @@ int main (void){
     }
 
     if(getpid() == p1){
-    /*    numero = 5;
-        int leido = leePipe(fd1, 0);
-        printf("Soy el 1, he leido un %d\n", leido);
-        numero += leido;
+        numero = 5;
 
-        leido = leePipe(fd1, 0);
-        printf("Soy el 1, he leido un %d\n", leido);
-        numero += leido;
-        
-        leido = leePipe(fd1, 0);
-        printf("Soy el 1, he leido un %d\n", leido);
-        numero += leido;
+        numero += leePipe(fd1, 0);
+        numero += leePipe(fd1, 0);
+        numero += leePipe(fd1, 0);
 
         printf("\E[31mEl proceso 1 termina con el valor %d (43)\E[m \n", numero);
-    */
+    
     }else if(getpid() == p2){
         numero = 5;
 
@@ -74,25 +67,25 @@ int main (void){
 
     }else if(getpid() == p3){
         numero = 7;
-        /*
+    
         sprintf(numACad, "%d", numero);
         escribePipe(fd1, numACad, 0);
 
         printf("El proceso 3 termina con el valor %d\n", numero);
-    */
+    
     }else if(getpid() == p4){
         numero = 3;
-    /*
+    
         numero += leePipe(fd3, 1);
 
         sprintf(numACad, "%d", numero);
         escribePipe(fd1, numACad, 1);
 
         printf("El proceso 4 termina con el valor %d\n", numero);
-    */
+    
     }else if(getpid() == p5){
         numero = 1;
-    
+        
         sprintf(numACad, "%d", numero);
         escribePipe(fd2, numACad, 1);
 
@@ -116,7 +109,7 @@ int main (void){
 
     }else if(getpid() == p8){
         numero = 3;
-    /*
+    
         wait(NULL);
         numero += leePipe(fd4, 0);
 
@@ -124,15 +117,15 @@ int main (void){
         escribePipe(fd3, numACad, 0);
 
         printf("El proceso 8 termina con el valor %d\n", numero);
-    */
+    
     }else if(getpid() == p9){
         numero = 9;
-    /*
+    
         sprintf(numACad, "%d", numero);
         escribePipe(fd4, numACad, 0);
 
         printf("El proceso 9 termina con el valor %d\n", numero);
-    */
+    
     }
 
 
@@ -151,7 +144,8 @@ void escribePipe(int fd[], char cadena[], int cierraFdUso){
 int leePipe(int fd[], int cierraFdUso){
     close(fd[1]);
     char buffer[10];
-
+    memset(buffer, 0, sizeof(buffer));
+    
     read(fd[0], buffer, sizeof(buffer));
     if(cierraFdUso)
         close(fd[0]);
