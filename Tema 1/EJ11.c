@@ -49,12 +49,15 @@ int main (void){
     
         printf("El proceso 2 termina con el valor %d\n", numero);
     }else if(getpid() == p3){
+        close(fd12[0]);
         numero = 7;
 
         escribePipe(fd13, numero);
 
         printf("El proceso 3 termina con el valor %d\n", numero);
     }else if(getpid() == p4){
+        close(fd12[0]);
+        close(fd13[0]);
         numero = 3;
 
         numero += leePipe(fd48);
@@ -68,12 +71,15 @@ int main (void){
 
         printf("El proceso 5 termina con el valor %d\n", numero);
     }else if(getpid() == p6){
+        close(fd25[0]);
         numero = 8;
 
         escribePipe(fd26, numero);
 
         printf("El proceso 6 termina con el valor %d\n", numero);
     }else if(getpid() == p7){
+        close(fd25[0]);
+        close(fd26[0]);
         numero = 2;
 
         escribePipe(fd27, numero);
