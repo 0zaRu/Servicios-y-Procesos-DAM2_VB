@@ -9,123 +9,89 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 
-int instanciaProceso(pid_t proceso, int nHijo, int *nPid);
-void escribePipe(int fd[], char cadena[], int cierraFdUso);
-int leePipe(int fd[], int cierraFdUso);
+int instanciaProceso(int *nPid, int fd[]);
+void escribePipe(int fd[], int numero);
+int leePipe(int fd[]);
 
 int main (void){
 
-    pid_t p1, p2, p3, p4, p5, p6, p7, p8, p9;
-    char numACad[10];
+    pid_t p1 = getpid(), p2, p3, p4, p5, p6, p7, p8, p9;
 
-    int fd1[2], fd2[2], fd3[2], fd4[2], numero=0;
-    pipe (fd1);
+    int fd12[2], fd13[2], fd14[2], fd25[2], fd26[2], fd27[2], fd48[2], fd89[2], numero=0;
+
+    if(instanciaProceso(&p2, fd12)){                                    //A PARTIR DE AQUÍ ES SOLO PROCESO 2
+        !instanciaProceso(&p5, fd25) && !instanciaProceso(&p6, fd26) && !instanciaProceso(&p7, fd27);
+        
+        if(getpid() != p2)
+            close(fd12[1]);
     
-    //printf("Soy el proceso 1, mi PID es %d y el PID de mi padre es %d\n", getpid(), getppid());
-    p1 = getpid();
+    }else{                                                              //A PARTIR DE AQUÍ ES SOLO PROCESO 1
+        if(!instanciaProceso(&p3, fd13) && instanciaProceso(&p4, fd14)) //A PARTIR DE AQUÍ ES SOLO PROCESO 4
+            if(instanciaProceso(&p8, fd48)){                            //A PARTIR DE AQUÍ ES SOLO PROCESO 8
+                close(fd14[1]);
 
-    if(instanciaProceso((fork()), 2, &p2)){
-        pipe(fd2);
-
-        !instanciaProceso(fork(), 5, &p5) && !instanciaProceso(fork(), 6, &p6) && !instanciaProceso(fork(), 7, &p7);
-
-    }else{
-        if(!instanciaProceso(fork(), 3, &p3) && instanciaProceso(fork(), 4, &p4)){
-            pipe(fd3);
-            if(instanciaProceso(fork(), 8, &p8)){
-                pipe(fd4);
-                instanciaProceso(fork(), 9, &p9);
+                if(instanciaProceso(&p9, fd89))                         //A PARTIR DE AQUÍ ES SOLO PROCESO 9
+                    close(fd48[1]);
             }
-        }
     }
 
     if(getpid() == p1){
         numero = 5;
 
-        numero += leePipe(fd1, 0);
-        numero += leePipe(fd1, 0);
-        numero += leePipe(fd1, 0);
+        numero += leePipe(fd12) + leePipe(fd13) + leePipe(fd14);
 
-        printf("\E[31mEl proceso 1 termina con el valor %d (43)\E[m \n", numero);
-    
+        printf("El proceso 1 termina con el valor %d\n", numero);
     }else if(getpid() == p2){
         numero = 5;
-
-        waitpid(p5, NULL, 0);
-        numero += leePipe(fd2, 0);
-        
-        waitpid(p6, NULL, 0);
-        numero += leePipe(fd2, 0);
-        
-        waitpid(p7, NULL, 0);
-        numero += leePipe(fd2, 0);
-
-        sprintf(numACad, "%d", numero);
-        escribePipe(fd1, numACad, 0);
+     
+        numero += leePipe(fd25) + leePipe(fd26) + leePipe(fd27);
+        escribePipe(fd12, numero);
     
-        printf("\E[31mEl proceso 2 termina con el valor %d (16)\E[m \n", numero);
-
+        printf("El proceso 2 termina con el valor %d\n", numero);
     }else if(getpid() == p3){
         numero = 7;
-    
-        sprintf(numACad, "%d", numero);
-        escribePipe(fd1, numACad, 0);
+
+        escribePipe(fd13, numero);
 
         printf("El proceso 3 termina con el valor %d\n", numero);
-    
     }else if(getpid() == p4){
         numero = 3;
-    
-        numero += leePipe(fd3, 1);
 
-        sprintf(numACad, "%d", numero);
-        escribePipe(fd1, numACad, 1);
+        numero += leePipe(fd48);
+        escribePipe(fd14, numero);
 
         printf("El proceso 4 termina con el valor %d\n", numero);
-    
     }else if(getpid() == p5){
         numero = 1;
         
-        sprintf(numACad, "%d", numero);
-        escribePipe(fd2, numACad, 1);
+        escribePipe(fd25, numero);
 
         printf("El proceso 5 termina con el valor %d\n", numero);
-    
     }else if(getpid() == p6){
         numero = 8;
 
-        sprintf(numACad, "%d", numero);
-        escribePipe(fd2, numACad, 1);
+        escribePipe(fd26, numero);
 
         printf("El proceso 6 termina con el valor %d\n", numero);
-    
     }else if(getpid() == p7){
         numero = 2;
 
-        sprintf(numACad, "%d", numero);
-        escribePipe(fd2, numACad, 1);
+        escribePipe(fd27, numero);
 
         printf("El proceso 7 termina con el valor %d\n", numero);
-
     }else if(getpid() == p8){
         numero = 3;
-    
-        wait(NULL);
-        numero += leePipe(fd4, 0);
 
-        sprintf(numACad, "%d", numero);
-        escribePipe(fd3, numACad, 0);
+        numero += leePipe(fd89);
+        escribePipe(fd48, numero);
 
         printf("El proceso 8 termina con el valor %d\n", numero);
-    
     }else if(getpid() == p9){
         numero = 9;
     
-        sprintf(numACad, "%d", numero);
-        escribePipe(fd4, numACad, 0);
+        escribePipe(fd89, numero);
 
         printf("El proceso 9 termina con el valor %d\n", numero);
-    
     }
 
 
@@ -133,39 +99,39 @@ int main (void){
     return 0;
 }
 
-void escribePipe(int fd[], char cadena[], int cierraFdUso){
-    close(fd[0]);
-    write(fd[1], cadena, strlen(cadena));
+void escribePipe(int fd[], int numero){
+    char numACad[10];
+    sprintf(numACad, "%d", numero);
     
-    if(cierraFdUso)
-        close(fd[1]);
+    write(fd[1], numACad, strlen(numACad));
+    close(fd[1]);
 }
 
-int leePipe(int fd[], int cierraFdUso){
-    close(fd[1]);
+int leePipe(int fd[]){
     char buffer[10];
     memset(buffer, 0, sizeof(buffer));
-    
+
     read(fd[0], buffer, sizeof(buffer));
-    if(cierraFdUso)
-        close(fd[0]);
-    
+    close(fd[0]);
+
     return atoi(buffer);
 }
 
-int instanciaProceso(pid_t proc, int nH, int *nPid){
-    
-    switch(proc){
-        case -1:
-            printf("Error durante la creacion\n");
-            break;
+int instanciaProceso(int *nPid, int fd[]){
+    pipe(fd);
 
-        case 0:     //Proceso hijo
+    switch (fork()) {
+        case -1:
+            printf("Error durante la creación del proceso hijo\n");
+            return -1;
+
+        case 0:  // Proceso hijo
+            close(fd[0]);
             *nPid = getpid();
-            //printf("Soy el proceso %d, mi PID es %d y el PID de mi padre es %d\n", nH, getpid(), getppid());
             return 1;
 
-        default:    //Proceso padre
+        default:  // Proceso padre
+            close(fd[1]);
             return 0;
     }
 }
