@@ -1,5 +1,5 @@
 //Codigo de Alberto Rodríguez
-
+//Casi siempre funciona aunque si se satura a veces se atasca, tampoco se cómo haría para salir del bucle
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
