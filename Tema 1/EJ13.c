@@ -1,5 +1,4 @@
 //Codigo de Alberto Rodríguez
-//Casi siempre funciona aunque si se satura a veces se atasca, tampoco se cómo haría para salir del bucle
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -27,27 +26,24 @@ int main (void){
             exit(-1);
         }
 
-        while(1){
-            fp = open("FIFO", 0);
-            bytesLeidos = read(fp, buffer, sizeof(buffer));
-            
-            while(bytesLeidos != 0){
-                //printf("%s\n", buffer); 
-                numero += atoi(buffer);
-                bytesLeidos = read(fp, buffer, sizeof(buffer));
+        fp = open("FIFO", 0);
 
-                printf("Proceso 1 tiene el valor (43): %d.\n", numero);
+        for(int i = 2; i <=9;){    
+            if(read(fp, buffer, sizeof(buffer)) != 0){
+                numero += atoi(buffer);
+                i++;
             }
-            close(fp);
         }
+
+        close(fp);
+        printf("Proceso 1 termina con el valor: %d.\n\n\n", numero);
     }else{
 
-        int fp;
-        char numACad[5];
+        char numACad[3];
         sprintf(numACad, "%d", numero);
 
         sleep(1);
-        fp = open("FIFO", 1);
+        int fp = open("FIFO", 1);
 
         if(fp == -1){
             printf("ERROR AL ABRIR EL FICHERO ...\n");
@@ -56,7 +52,6 @@ int main (void){
         //printf("Envio el %d\n", numero);
         write(fp, numACad, strlen(numACad));
         close(fp);
-
     } 
 
     while(wait(NULL) != -1);
