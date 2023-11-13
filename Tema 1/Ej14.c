@@ -5,39 +5,44 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <signal.h>
 #include <fcntl.h>
 
-int instanciaProceso(int *nPid);
+void manejadorPING(int segnal){
+    printf("PING\t");
+}
+
+void manejadorPONG(int segnal){
+    printf("PONG\n");
+}
 
 int main(void){
 
-    pid_t p[4];
-    p[1] = getpid();
-    !instanciaProceso(&p[2]) && !instanciaProceso(&p[3]);
+    pid_t pHijo, pPadre = getpid();
+    signal(SIGUSR1, manejadorPONG);
+    signal(SIGUSR2, manejadorPING);
 
-    if(getpid() == p[2]){
-        
-    
-    }else if(getpid() == p[3]){
-
-    }
-
-    while(wait(NULL) != -1);
-    return 0;
-}
-
-int instanciaProceso(int *nPid){
-
-    switch (fork()) {
+    switch ((pHijo = fork())) {
         case -1:
             printf("Error durante la creación del proceso hijo\n");
             return -1;
 
         case 0:  // Proceso hijo
-            *nPid = getpid();
-            return 1;
-
+            
+            for(int i = 0; i < 10; i++){
+                pause();
+                kill(pPadre, SIGUSR2);
+            }
+            break;
         default:  // Proceso padre
-            return 0;
+            
+            for(int i = 0; i < 10; i++){
+                kill(pHijo, SIGUSR1);
+                pause();
+            }
+        break;
     }
+
+    while(wait(NULL) != -1);
+    return 0;
 }
