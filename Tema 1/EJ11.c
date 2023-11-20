@@ -102,6 +102,7 @@ int main (void){
 
 
     while(wait(NULL) != -1);
+    
     return 0;
 }
 
