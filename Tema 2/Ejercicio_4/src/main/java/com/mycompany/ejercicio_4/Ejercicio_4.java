@@ -15,13 +15,17 @@ public class Ejercicio_4 {
     public static void main(String[] args) {
         ArrayList<MiHilo> listaHilos = new ArrayList<>();
         
-        for(int i = 0; i < rand.nextInt(5, 11); i++){
+        int nHilos = rand.nextInt(6)+5;
+
+        for(int i = 1; i <= nHilos; i++){
             listaHilos.add(new MiHilo("Hilo "+ i));
+            listaHilos.get(i-1).start();
+            
         }
         
-        for(MiHilo hilo: listaHilos){
-            //MiHilo saliente = hilo.pop
-        }
+        while(Thread.activeCount() > 2);
         
+        System.out.println("¡Programa finalizado!");
+    
     }
 }
