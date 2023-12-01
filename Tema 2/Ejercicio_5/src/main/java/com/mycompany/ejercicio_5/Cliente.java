@@ -9,8 +9,10 @@ import java.util.Random;
 public class Cliente{
 
     int nProductos;
+    int numCliente;
     
-    public Cliente(int nProductos){
+    public Cliente(int nProductos, int numCliente){
        this.nProductos = nProductos;
+       this.numCliente = numCliente;
     }
 }
