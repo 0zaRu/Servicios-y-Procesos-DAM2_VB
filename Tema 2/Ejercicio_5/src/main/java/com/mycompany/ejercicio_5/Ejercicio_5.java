@@ -11,7 +11,7 @@ import java.util.logging.Logger;
  */
 public class Ejercicio_5 {
     static final int NCAJEROS = 10;
-    static ArrayList<Cliente> clientes = new ArrayList<>();
+    static long inicio = System.nanoTime();
     
     public static void main(String[] args) {
         Random rand = new Random();
@@ -21,27 +21,21 @@ public class Ejercicio_5 {
         for (int i = 0; i < NCAJEROS; i++) 
             cajeros.add(new HiloCajero("Cajero "+(i+1)));
         
-        for (int i = 0; i < 100; i++) 
-            clientes.add(new Cliente(rand.nextInt(20-1)+1, i+1));
-        
-        for(HiloCajero cajero: cajeros){
-            cajero.start();
+        try{
             
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Ejercicio_5.class.getName()).log(Level.SEVERE, null, ex);
+            for(HiloCajero cajero: cajeros){
+                cajero.start();
+                Thread.sleep(10);                
             }
-        }
-        
-        for(HiloCajero cajero: cajeros){
-            try {
+
+            for(HiloCajero cajero: cajeros)    
                 cajero.join();
-            } catch (InterruptedException ex) {
+                
+        } catch (InterruptedException ex) {
                 Logger.getLogger(Ejercicio_5.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
         
-        System.out.println("Cierra el super");
+        long acaba = System.nanoTime();
+        System.out.println("Cierra el super, ha estado abierto: "+(acaba-inicio)/1e9);
     }
 }
