@@ -25,7 +25,6 @@ public class Ejercicio_7 {
             hilo.start();
         }
         
-        
         while(MiHilo.activeCount() != 1){
             //MiHilo hiloInterrupt = hilos.get(rand.nextInt(hilos.size()-1));
             
