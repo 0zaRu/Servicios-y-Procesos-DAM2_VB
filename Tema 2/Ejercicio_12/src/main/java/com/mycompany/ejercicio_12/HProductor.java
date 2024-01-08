@@ -13,12 +13,8 @@ public class HProductor extends Thread {
 
     @Override
     public void run() {
-
+        
         while (!cola.terminado)
             cola.readPut();
-        
-
-    }
-
-    
+    }    
 }
