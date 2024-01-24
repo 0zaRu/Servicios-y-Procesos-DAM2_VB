@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ac0db7d4-7f32-4bf9-a0b4-8a40a9f3baae" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../Ejercicio_15/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ejercicio_15/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ejercicio_15/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ejercicio_15/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ejercicio_15/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ejercicio_15/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ejercicio_15/src/main/java/com/mycompany/ejercicio_15/Cliente.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ejercicio_15/src/main/java/com/mycompany/ejercicio_15/Ejercicio_15.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ejercicio_15/src/main/java/com/mycompany/ejercicio_15/HiloCajero.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ejercicio_5/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ejercicio_5/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ejercicio_5/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ejercicio_5/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ejercicio_5/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ejercicio_5/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ejercicio_5/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Ejercicio_5/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Ejercicio_5/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Ejercicio_5/src/main/java/com/mycompany/ejercicio_5/Cliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ejercicio_5/src/main/java/com/mycompany/ejercicio_5/Cliente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Ejercicio_5/src/main/java/com/mycompany/ejercicio_5/HiloCajero.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ejercicio_5/src/main/java/com/mycompany/ejercicio_5/HiloCajero.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 7
+}]]></component>
+  <component name="ProjectId" id="2bH6G6gqNEUjbyBwDgMGe5e3gyl" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/arube/Desktop/Clase/DAM/DAM2/Proyectos de servicios y procesos/Tema 2/Ejercicio_14",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-19.0.2-corretto-19.0.2-3183f394aec4-f0552fc0" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ac0db7d4-7f32-4bf9-a0b4-8a40a9f3baae" name="Changes" comment="" />
+      <created>1705859558805</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1705859558805</updated>
+      <workItem from="1705859559854" duration="420000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

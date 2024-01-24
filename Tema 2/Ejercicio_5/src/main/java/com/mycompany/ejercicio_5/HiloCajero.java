@@ -1,9 +1,10 @@
 package com.mycompany.ejercicio_5;
 
-import static com.mycompany.ejercicio_5.Ejercicio_5.inicio;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static com.mycompany.ejercicio_5.Ejercicio_5.inicio;
 
 /**
  *
