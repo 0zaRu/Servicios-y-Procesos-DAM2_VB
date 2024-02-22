@@ -1,7 +1,6 @@
 package com.mycompany.ejercicio_14;
 
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CyclicBarrier;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -10,29 +9,40 @@ import java.util.logging.Logger;
  * @author 6002754
  */
 public class HJugador extends Thread{
-    Arbitro arbi;
     int miNum;
-    CyclicBarrier barrera;
+    private boolean jugado = false;
+    private HArbitro arbi;
+    private Cola cola;
 
-    public HJugador(Arbitro cola, int miNum, CyclicBarrier barrera) {
-        this.arbi = cola;
+    public HJugador(HArbitro arbi, int miNum, Cola cola) {
+        this.arbi = arbi;
         this.miNum = miNum;
-        this.barrera = barrera;
+        this.cola = cola;
     }
 
     @Override
     public void run() {
     
-        while(!arbi.terminado){
-            if(arbi.turnoCont == miNum)
-                arbi.jugada(miNum);
-    
+        while (!arbi.isTerminado()){
+            
             try {
-                barrera.await();
-                sleep((long) ((Math.random()*300)+200));
-            } catch (InterruptedException | BrokenBarrierException ex) {
-                Logger.getLogger(HJugador.class.getName()).log(Level.SEVERE, null, ex);
+                int num = new Random().nextInt(50) + 1;
+                System.out.println("El Jugador " + miNum + " ha sacado un " + num);
+                cola.put(num);
+                
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                Logger.getLogger(HJugador.class.getName()).log(Level.SEVERE, null, e);
             }
+            
         }
+    }
+    
+    public boolean isJugado() {
+        return jugado;
+    }
+
+    public void setJugado(boolean jugado) {
+        this.jugado = jugado;
     }
 }

@@ -1,7 +1,8 @@
 package com.mycompany.ejercicio_14;
 
 import java.util.ArrayList;
-import java.util.concurrent.CyclicBarrier;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -10,16 +11,16 @@ import java.util.concurrent.CyclicBarrier;
 public class Ejercicio_14 {
 
     private final static int NUM_JUGADORES = 5;
-    private final static CyclicBarrier barrera = new CyclicBarrier(NUM_JUGADORES-1);
     
     public static void main(String[] args) {
-        Arbitro arbi = new Arbitro(barrera);
-        
         ArrayList<HJugador> jugadores = new ArrayList<>();
+        Cola cola = new Cola();
+        HArbitro arbi = new HArbitro(jugadores, cola);
         
-        for(int i = 0; i < NUM_JUGADORES; i++){
-            jugadores.add(new HJugador(arbi, i+1, barrera));
-        }
+        for(int i = 0; i < NUM_JUGADORES; i++)
+            jugadores.add(new HJugador(arbi, i+1, cola));
+        
+        arbi.start();
         
         for(HJugador j: jugadores)
             j.start();
@@ -27,38 +28,47 @@ public class Ejercicio_14 {
     }
 }
 
-class Arbitro {
-    CyclicBarrier barrera;
-    private final static int nAleatorio = (int)(Math.random() * 50);
-    int turnoCont = 1, nVuelta = 1;
-    
-    boolean terminado = false;
-    
-    public Arbitro(CyclicBarrier barrera){
-        this.barrera = barrera;
-    }
-    
-    public synchronized void jugada(int hJugador) {
-        try{
-            turnoCont++;
+class Cola{
+
+    private boolean disponible;
+    private int numero = 0;
+
+    public synchronized int get(){
+        
+        while(!disponible){
+            try {
             
-            if(turnoCont == 6){
-                turnoCont = 1;
-                nVuelta++;
+                wait();
+        
+            } catch (InterruptedException e) {
+                Logger.getLogger(Cola.class.getName()).log(Level.SEVERE, null, e);
             }
-            
-            int valorPensado = (int)(Math.random()*50);
-            System.out.println("Vuelta: "+nVuelta+" | Turno del jugador: "+ hJugador+": "+valorPensado);
-            
-            if(valorPensado == nAleatorio){
-                System.out.println("\t\tHA GANADO EL JUGADOR "+hJugador);
-                terminado = true;
-            }
-            
-            barrera.await();
-            
-        }catch(Exception e){
-            
         }
+        
+        disponible = false;
+        notifyAll();
+        return numero;
+    }
+
+    public synchronized void put(int numero){
+         while(disponible){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                Logger.getLogger(Cola.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        this.numero = numero;
+        disponible = true;
+
+        notifyAll();
+    }
+
+    public boolean isDisponible() {
+        return disponible;
+    }
+
+    public void setDisponible(boolean disponible) {
+        this.disponible = disponible;
     }
 }

@@ -1,4 +1,4 @@
-package com.mycompany.ejercicio_10;
+package com.mycompany.ejercicio_13;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -13,7 +13,7 @@ import java.util.Scanner;
  *
  * @author arube
  */
-public class EJ10_Cliente {
+public class EJ13_Cliente {
 
     static int PUERTO = 9876;
     static InetAddress SERVERIP;
@@ -26,9 +26,6 @@ public class EJ10_Cliente {
         
         try{            
             SERVERIP = InetAddress.getLocalHost();
-            
-            socket = new DatagramSocket();
-            
             do{
                 int op = mostrarMenu();
                 byte[] envio = Integer.toString(op).getBytes();
@@ -39,6 +36,7 @@ public class EJ10_Cliente {
                         //Podría haber enviado todo junto y hacer un split tambien, no se cual sea mejor opción
                         //Quise modularizar pero solo podría haberlo hecho con los 2 primeros socket, el tercero necesita ser el mismo que recibe
                         DatagramPacket datagrama = new DatagramPacket(envio, envio.length, SERVERIP, PUERTO);
+                        socket = new DatagramSocket();
                         socket.send(datagrama);
                         
                         System.out.print("\nIntroduce el primer numero a operar: ");
@@ -46,6 +44,7 @@ public class EJ10_Cliente {
                         envio = Float.toString(num).getBytes();
                         
                         datagrama = new DatagramPacket(envio, envio.length, SERVERIP, PUERTO);
+                        socket = new DatagramSocket();
                         socket.send(datagrama);
                         
                         System.out.print("\nIntroduce el segundor numero a operar: ");
@@ -53,6 +52,7 @@ public class EJ10_Cliente {
                         envio = Float.toString(num).getBytes();
                         
                         datagrama = new DatagramPacket(envio, envio.length, SERVERIP, PUERTO);
+                        socket = new DatagramSocket();
                         socket.send(datagrama);
                         
                         

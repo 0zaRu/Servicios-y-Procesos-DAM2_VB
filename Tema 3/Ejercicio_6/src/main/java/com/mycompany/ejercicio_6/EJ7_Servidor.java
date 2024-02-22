@@ -27,12 +27,14 @@ public class EJ7_Servidor {
         
         try{
             ServerSocket serverSocket = new ServerSocket(puerto);
+            socketCliente1 = serverSocket.accept();
             
-            while(true){
-                socketCliente1 = serverSocket.accept();
-                
+            doSalida = new DataOutputStream(socketCliente1.getOutputStream());
+            diEntrada = new DataInputStream(socketCliente1.getInputStream());
+            
+            while(true){    
                 for(int i=0; i < operacion.length-1; i++){
-                    diEntrada = new DataInputStream(socketCliente1.getInputStream());
+                    operacion[i] = 0;
                     System.out.println("EL CLIENTE HA SELECCIONADO: "+ (operacion[i] = diEntrada.readFloat()));
                 }
 
@@ -42,10 +44,11 @@ public class EJ7_Servidor {
                     case 3: operacion[3] = operacion[1]*operacion[2]; break;
                     case 4: operacion[3] = operacion[1]/operacion[2]; break;
                 }
-
-                doSalida = new DataOutputStream(socketCliente1.getOutputStream());
+                System.out.println(operacion[3]);
+                
                 doSalida.writeFloat(operacion[3]);
             }
+            
         }catch(IOException e){
             System.err.println("Error a la hora de establecer conexiones");
         }
