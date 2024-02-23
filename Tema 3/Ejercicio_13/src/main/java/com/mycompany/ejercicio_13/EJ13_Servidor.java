@@ -1,9 +1,13 @@
 package com.mycompany.ejercicio_13;
 
+import java.io.DataInputStream;
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -11,51 +15,95 @@ import java.util.ArrayList;
  */
 public class EJ13_Servidor {
     
-    private static final ArrayList<String> preguntas = new ArrayList<>();
-    private static final ArrayList<String> respuestas = new ArrayList<>();
+    private static Informacion informacion = new Informacion();
+    
+    private static ServerSocket socket;
+    private static int PUERTO = 9876;
     
     public static void main(String[] args) {
-        System.out.println("TERMINAL SERVIDOR");
-        int puerto = 9876;
-        
-        DatagramSocket socket = null;
-        establecePreguntasRespuestas();
-        
+        System.out.println("== TERMINAL SERVIDOR ==");
+
         try {
-            socket = new DatagramSocket(puerto);
-            while(true){
+            socket = new ServerSocket(PUERTO);
+            
+            while (true) {
+           
+                Socket conexion = socket.accept();
                 
-                
+                HServidor hilo = new HServidor(conexion, informacion);
+                hilo.start();
                 
             }
-        }catch(IOException e){
-            System.err.println("Error a la hora de establecer conexiones o interprentando datos, "
-                    + "tal vez el cliente se cortó a la mitad y volvió a entablar conexión a mitad de juego");
+        } catch (IOException e) {
+            Logger.getLogger(EJ13_Servidor.class.getName()).log(Level.SEVERE, null, e);
         }
         finally{
             try {
+            
                 socket.close();
             
-            } catch (Exception ex) {
-                
+            } catch (IOException ex) {
+                Logger.getLogger(EJ13_Servidor.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
+}
+
+
+/**
+ *
+ * @author arube
+ */
+class HServidor extends Thread {
+
+    private Socket socketCliente;
+    private Informacion informacion;
     
-    private static void establecePreguntasRespuestas(){
-        preguntas.add("¿Cuál es la capital de Francia?\nA) Berlín\nB) París\nC) Madrid\nD) Roma");
-        respuestas.add("B");
+    public HServidor(Socket conexion, Informacion informacion) {
+        this.socketCliente = conexion;
+        this.informacion = informacion;
+    }
+
+    @Override
+    public void run() {
         
-        preguntas.add("¿Cuántos planetas hay en nuestro sistema solar?\nA) 7\nB) 10\nC) 9\nD) 9");
-        respuestas.add("D");
+        int puntuacion = 0;
+        String respuesta = "";
+        ObjectOutputStream doSalida = null;
+        DataInputStream doEntrada = null;
         
-        preguntas.add("¿Cuál es el río más largo del mundo?\nA) Nilo\nB) Amazonas\nC) Yangtsé\nD) Misisipi");
-        respuestas.add("A");
-        
-        preguntas.add("¿Cuál es el mejor personaje de League of Legends?\nA) Sett\nB) Teemo\nC) Aurelion Sol\nD) Yumi");
-        respuestas.add("A");
-        
-        preguntas.add("¿Mejor ejercicio del día de pierna?\nA) Prensa\nB) Sentadilla\nC) Press Banca\nD) Gemelos");
-        respuestas.add("C");
+        try{
+            doSalida = new ObjectOutputStream(socketCliente.getOutputStream());
+            doEntrada = new DataInputStream(socketCliente.getInputStream());
+            doSalida.writeObject(informacion);
+
+            ArrayList<String> respuestasConUsr = new ArrayList<>();
+            
+            while (!(respuesta = doEntrada.readUTF()).equals("Estan han sido todas las preguntas")) 
+                respuestasConUsr.add(respuesta);
+            
+            for (int i = 0; i < respuestasConUsr.size()-1; i++)
+                if (respuestasConUsr.get(i).equalsIgnoreCase(informacion.getRespuestasValidas()[i]))
+                    puntuacion++;
+                
+            
+            String nombre = respuestasConUsr.get(respuestasConUsr.size()-1);
+            informacion.addPuntos(nombre, puntuacion);
+            informacion.verTabla();
+            
+        } catch (Exception e){
+            Logger.getLogger(HServidor.class.getName()).log(Level.SEVERE, null, e);
+        }
+        finally{
+            try {
+                
+                doSalida.close();
+                doEntrada.close();
+                socketCliente.close();
+            
+            } catch (IOException ex) {
+                Logger.getLogger(HServidor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }

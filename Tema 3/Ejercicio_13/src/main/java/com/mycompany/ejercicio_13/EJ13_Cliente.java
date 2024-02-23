@@ -1,134 +1,81 @@
 package com.mycompany.ejercicio_13;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
+import java.io.ObjectInputStream;
 import java.net.InetAddress;
-import java.net.SocketException;
-import java.util.Arrays;
-import java.util.InputMismatchException;
+import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author arube
  */
 public class EJ13_Cliente {
-
-    static int PUERTO = 9876;
-    static InetAddress SERVERIP;
-    static Scanner kb = new Scanner(System.in);
+    
+    private static String nombreUsr;
+    private static InetAddress SERVERIP;
+    private static int PUERTO = 9876;
     
     public static void main(String[] args) {
         System.out.println("TERMINAL CLIENTE");
-        DatagramSocket socket = null;
-        boolean salir = false;
         
-        try{            
-            SERVERIP = InetAddress.getLocalHost();
-            do{
-                int op = mostrarMenu();
-                byte[] envio = Integer.toString(op).getBytes();
-                limpiar();
-                
-                switch(op){
-                    case 1: case 2: case 3: case 4:
-                        //Podría haber enviado todo junto y hacer un split tambien, no se cual sea mejor opción
-                        //Quise modularizar pero solo podría haberlo hecho con los 2 primeros socket, el tercero necesita ser el mismo que recibe
-                        DatagramPacket datagrama = new DatagramPacket(envio, envio.length, SERVERIP, PUERTO);
-                        socket = new DatagramSocket();
-                        socket.send(datagrama);
-                        
-                        System.out.print("\nIntroduce el primer numero a operar: ");
-                        float num = kb.nextFloat();
-                        envio = Float.toString(num).getBytes();
-                        
-                        datagrama = new DatagramPacket(envio, envio.length, SERVERIP, PUERTO);
-                        socket = new DatagramSocket();
-                        socket.send(datagrama);
-                        
-                        System.out.print("\nIntroduce el segundor numero a operar: ");
-                        num = kb.nextFloat();
-                        envio = Float.toString(num).getBytes();
-                        
-                        datagrama = new DatagramPacket(envio, envio.length, SERVERIP, PUERTO);
-                        socket = new DatagramSocket();
-                        socket.send(datagrama);
-                        
-                        
-                        byte[] buffer = new byte[1024];
-                        datagrama.setData(buffer);
-                        datagrama.setLength(buffer.length);
-                        
-                        socket.receive(datagrama);
-
-                        String recibido = new String(datagrama.getData());
-                        System.out.println("Resultado: "+ recibido);
-                        
-                    break;
-                    
-                    case 9:
-                        System.out.println("Se va a salir del programa");
-                        salir = true;
-                    break;
-                    
-                    default:
-                        System.out.println("Valor introducido no válido ...");
-                        
-                }
-                kb.nextLine();
-                System.out.println("Pulse una enter para continuar ...");
-                kb.nextLine();
-                
-                limpiar();
-                
-            }while (!salir);
-        }catch(IOException e){
-            System.err.println("No se pudo establecer conexión con el servidor");
+        Scanner kb = new Scanner(System.in);
+        Socket cliente = null;
+        DataOutputStream doSalida = null;
+        ObjectInputStream doEntrada = null;
         
-        }catch(InputMismatchException ie){
-            System.err.println("Debes introducir numeros en las casillas numéricas.");
-        
+        try{
+            SERVERIP = InetAddress.getByName("localhost");
+            
+            cliente = new Socket(SERVERIP, PUERTO);
+            doEntrada = new ObjectInputStream(cliente.getInputStream());
+            
+            Informacion informacion = (Informacion) doEntrada.readObject();
+            informacion.verTabla();
+            
+            System.out.print("Inserta el nombre de jugador: ");
+            nombreUsr = kb.nextLine();
+            
+            ArrayList<String> respuestas = (ArrayList<String>) informacion.ejecutaPregunta();            
+            
+            int resptAcertadas = 0;
+            for(int i = 0; i < informacion.getPreguntas().length; i++)
+                if(informacion.getRespuestasValidas()[i].equals(respuestas.get(i)))
+                    resptAcertadas++;
+            
+            System.out.print("\nRespuestas dadas: " + respuestas.size() + "\nRespuestas acertadas: "+ resptAcertadas);
+            
+            
+            
+            
+            respuestas.add(nombreUsr);
+            respuestas.add("Estan han sido todas las preguntas");
+            
+            doSalida = new DataOutputStream(cliente.getOutputStream());
+            
+            for (String respueta : respuestas)
+                doSalida.writeUTF(respueta);
+            
+        } catch (Exception e){
+            Logger.getLogger(EJ13_Cliente.class.getName()).log(Level.SEVERE, null, e);
         }
-
-        kb.close();
-    }
-    
-    /**No usado pero funcina*/
-    private static void envioUDP(byte[] paquete) throws SocketException, IOException{
-        DatagramPacket datagrama = new DatagramPacket(paquete, paquete.length, SERVERIP, PUERTO);
-        DatagramSocket socket = new DatagramSocket();
-        socket.send(datagrama);
-    }
-    
-    /**No usado porque se traba, creo que porque debe usar el mismo datagram Packet y socket que usa para enviar, para recibir*/
-    private static String recibidoUDP() throws SocketException, IOException{
-        byte[] buffer = new byte[1024];
-        
-        DatagramPacket datagrama = new DatagramPacket(buffer, buffer.length, SERVERIP, PUERTO);
-        DatagramSocket socket = new DatagramSocket();
-        socket.receive(datagrama);
-        
-        return Arrays.toString(datagrama.getData());
-    }
-    
-    private static int mostrarMenu() throws InputMismatchException{
-        System.out.println("------ Menú ------");
-        System.out.println("1 - Sumar");
-        System.out.println("2 - Restar");
-        System.out.println("3 - Multiplicar");
-        System.out.println("4 - Dividir");
-        System.out.println("9 - Salir");
-        System.out.println("-------------------");
-        
-        System.out.print("\n\tElige una opción: ");
-        return kb.nextInt();
-    }
-    
-    static void limpiar(){
-        for(int i = 0; i < 30; i++){
-            System.out.println("");
+        finally{
+            try {
+                
+                doSalida.close();
+                doEntrada.close();
+                kb.close();
+                cliente.close();
+                
+            } catch (IOException ex) {
+                Logger.getLogger(EJ13_Cliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
+        
     
 }
